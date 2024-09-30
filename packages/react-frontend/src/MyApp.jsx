@@ -30,7 +30,7 @@ const characters = [
             characterData={characters} 
             removeCharacter={removeOneCharacter}
         />
-        <Form />
+        <Form handleSubmit={updateList}/>
       </div>
     );
     function removeOneCharacter(index) {
@@ -39,6 +39,9 @@ const characters = [
         });
         setCharacters(updated);
       }
+    function updateList(person) {
+        setCharacters([...characters, person]);
+    }
   }
 
 export default MyApp;
