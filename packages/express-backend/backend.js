@@ -47,6 +47,13 @@ const addUser = (user) => {
   return user;
 };
 
+// implement hard delete button
+const deleteByID = (id) =>{
+  const intialLength = users["users_list"].length;
+  users["users_list"] = users["users_list"].filter((user) => user["id"] != id);
+  return users["users_list"].length < intialLength;
+};
+
 app.use(express.json());
 
 app.get("/", (req, res) => {
@@ -75,7 +82,6 @@ app.get("/users", (req, res) => {
   }
 });
 
-
 app.get("/users/:id", (req, res) => {
   const id = req.params["id"]; //or req.params.id
   let result = findUserById(id);
@@ -86,10 +92,24 @@ app.get("/users/:id", (req, res) => {
   }
 });
 
-
+// why isnt this being overidden 
 app.post("/users", (req, res) => {
   const userToAdd = req.body;
   addUser(userToAdd);
   res.send();
 });
 
+// the DELETE http method to remove user
+app.delete("/users/:id", (req, res) => {
+  const id = req.params["id"]; //or req.params.id
+  const deleted = deleteByID(id);
+
+  if (!deleted){
+    res.status(404).send("Not found");
+  } else{
+    res.status(204).send("No content");
+  }
+});
+
+
+//do i need a fetch call ?
