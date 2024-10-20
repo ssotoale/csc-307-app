@@ -1,5 +1,6 @@
 // backend.js
 import express from "express";
+import cors from "cors";
 
 const app = express();
 const port = 8000;
@@ -62,6 +63,9 @@ const deleteByID = (id) =>{
   return users["users_list"].length < intialLength;
 };
 
+// assingment 3
+app.use(cors()); //allow backend to respond to calls coming from a differnt origin, not good securtity practice
+
 app.use(express.json());
 
 app.get("/", (req, res) => {
@@ -73,6 +77,7 @@ app.listen(port, () => {
     `Example app listening at http://localhost:${port}`
   );
 });
+
 
 // Remove it since it overrode the new users endpoint
 // app.get("/users", (req, res) => {
