@@ -39,6 +39,14 @@ const findUserByName = (name) => {
   );
 };
 
+//find users by name and job, step 7 
+const findUserByNameAndJob = (name, job) => {
+  return users["users_list"].filter(
+    (user) => user["name"] === name && user["job"] === job
+  );
+};
+
+
 const findUserById = (id) =>
   users["users_list"].find((user) => user["id"] === id);
 
@@ -71,9 +79,27 @@ app.listen(port, () => {
 //   res.send(users);
 // });
 
+//remove bc it overrode the name and job
+// app.get("/users", (req, res) => {
+//   const name = req.query.name; //help
+//   if (name != undefined) {
+//     let result = findUserByName(name);
+//     result = { users_list: result };
+//     res.send(result);
+//   } else {
+//     res.send(users);
+//   }
+// });
+
+// query for specific name AND job
 app.get("/users", (req, res) => {
-  const name = req.query.name; //help
-  if (name != undefined) {
+  const name = req.query.name; //name
+  const job = req.query.job; //job
+  if (name != undefined && job != undefined) {
+    let result = findUserByNameAndJob(name, job);
+    result = { users_list: result };
+    res.send(result);
+  } else if (name != undefined) {
     let result = findUserByName(name);
     result = { users_list: result };
     res.send(result);
@@ -82,6 +108,7 @@ app.get("/users", (req, res) => {
   }
 });
 
+// search by ID
 app.get("/users/:id", (req, res) => {
   const id = req.params["id"]; //or req.params.id
   let result = findUserById(id);
